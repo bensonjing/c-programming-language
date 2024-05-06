@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define MAXOP 100  /* max size of operand or operator */ 
 #define NUMBER '0' /* signal that a number was found */ 
@@ -37,7 +38,14 @@ int main()
             else 
                 printf("error: zero divisor\n");
             break; 
-        case '\n': 
+		case '%': 
+            op2 = pop(); 
+            if (op2 != 0.0) 
+                push(remainder(pop(), op2)); 
+            else 
+                printf("error: zero divisor\n");
+            break; 
+        case '\n':
             printf("\t%.8g\n", pop()); 
             break; 
         default: 
@@ -78,20 +86,36 @@ void ungetch(int);
 /* getop: get the next operator or operand */ 
 int getop(char s[])
 {
-    int i, c; 
+    int i, c;
 
     while ((s[0] = c = getch()) == ' ' || c == '\t');  
     s[1] = '\0'; 
-    if (!isdigit(c) && c != '.') /* not a number */
+
+    if (!isdigit(c) && c != '.' && c != '-') /* not a number */
         return c;	   
+
 	i = 0; 
+	if (c == '-') {
+		int next;
+		if (!isdigit(next = getch())) {
+			ungetch(next); 
+			return c;            /* collect '-' operand */ 
+		} else {
+			s[++i] = next;
+			while (isdigit(s[++i] = c = getch())); 
+		}
+	}
+
 	if (isdigit(c))				 /* collect integer part */ 
 		while (isdigit(s[++i] = c = getch())); 
+
 	if (c == '.')				 /* collect fraction part */ 
 		while (isdigit(s[++i] = c = getch())); 
+
 	s[i] = '\0'; 
 	if (c != EOF)
 		ungetch(c); 
+
 	return NUMBER;
 }
 
