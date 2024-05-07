@@ -1,36 +1,50 @@
+/* Reverse Polish calculator 
+ *
+ * The calculator reads arithmetic operations in postfix order and outputs the result. 
+ * The calculator handles operations inlcuding: addition, subtraction, multiplication, division, and modulus 
+ * 
+ * Examples 
+ * ========
+ * > 1 2 + 4 3 - * 
+ * 3
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
-#define MAXOP 100  /* max size of operand or operator */ 
-#define NUMBER '0' /* signal that a number was found */ 
+#define MAXOP 100  
+#define NUMBER '0'
 
 int getop(char[]); 
 void push(double);
 double pop(void);
 
-/* reverse Polish calculator */
 int main() 
 {
     int type; 
     double op2; 
-    char s[MAXOP]; 
+    char input[MAXOP];
 
-    while ((type = getop(s)) != EOF) {
+    while ((type = getop(input)) != EOF) {
         switch (type) {
         case NUMBER: 
-            push(atof(s)); 
+            push(atof(input)); 
             break;
+
         case '+': 
             push(pop() + pop());
             break; 
+
         case '*': 
             push(pop() * pop()); 
             break; 
+
         case '-': 
             op2 = pop(); 
             push(pop() - op2); 
             break; 
+
         case '/': 
             op2 = pop(); 
             if (op2 != 0.0) 
@@ -38,41 +52,44 @@ int main()
             else 
                 printf("error: zero divisor\n");
             break; 
+
 		case '%': 
             op2 = pop(); 
             if (op2 != 0.0) 
-                push(remainder(pop(), op2)); 
+                push(fmod(pop(), op2)); 
             else 
                 printf("error: zero divisor\n");
             break; 
+
         case '\n':
             printf("\t%.8g\n", pop()); 
             break; 
+
         default: 
-            printf("error: unknown operation %s\n", s);
+            printf("error: unknown operation %s\n", input);
             break;
         }
     }
     return 0;
 }
 
-#define MAXVAL 100 /* maximum depth of stack */ 
+#define MAXDEPTH 100 
 
-int sp = 0;        /* next free stack position */ 
-double val[100];   /* value stack */ 
+int stackPointer = 0;        
+double stack[100];   
 
-void push(double f) 
+void push(double oprand) 
 {
-    if (sp < MAXVAL)
-        val[sp++] = f; 
+    if (stackPointer < MAXDEPTH)
+        stack[stackPointer++] = oprand; 
     else 
-        printf("error: stack pull, can't push %g\n", f); 
+        printf("error: stack pull, can't push %g\n", oprand); 
 }
 
 double pop(void) 
 {
-    if (sp > 0) 
-        return val[--sp]; 
+    if (stackPointer > 0) 
+        return stack[--stackPointer]; 
     else 
         printf("error: stack empty\n"); 
         return 0.0;
@@ -80,59 +97,58 @@ double pop(void)
 
 #include <ctype.h> 
 
-int getch(void); 
-void ungetch(int); 
+int getChar(void); 
+void ungetChar(int); 
 
-/* getop: get the next operator or operand */ 
-int getop(char s[])
+int getop(char input[])
 {
-    int i, c;
+    int index, current;
 
-    while ((s[0] = c = getch()) == ' ' || c == '\t');  
-    s[1] = '\0'; 
+    while ((input[0] = current = getChar()) == ' ' || current == '\t');  
+    input[1] = '\0'; 
 
-    if (!isdigit(c) && c != '.' && c != '-') /* not a number */
-        return c;	   
+    if (!isdigit(current) && current != '.' && current != '-') 
+        return current;	   
 
-	i = 0; 
-	if (c == '-') {
+	index = 0; 
+	if (current == '-') {
 		int next;
-		if (!isdigit(next = getch())) {
-			ungetch(next); 
-			return c;            /* collect '-' operand */ 
+		if (!isdigit(next = getChar())) {
+			ungetChar(next); 
+			return current;            
 		} else {
-			s[++i] = next;
-			while (isdigit(s[++i] = c = getch())); 
+			input[++index] = next;
+			while (isdigit(input[++index] = current = getChar())); 
 		}
 	}
 
-	if (isdigit(c))				 /* collect integer part */ 
-		while (isdigit(s[++i] = c = getch())); 
+	if (isdigit(current))
+		while (isdigit(input[++index] = current = getChar())); 
 
-	if (c == '.')				 /* collect fraction part */ 
-		while (isdigit(s[++i] = c = getch())); 
+	if (current == '.')
+		while (isdigit(input[++index] = current = getChar())); 
 
-	s[i] = '\0'; 
-	if (c != EOF)
-		ungetch(c); 
+	input[index] = '\0'; 
+	if (current != EOF)
+		ungetChar(current); 
 
 	return NUMBER;
 }
 
 #define BUFSIZE 100 
 
-char buf[BUFSIZE]; 
-int bufp = 0; 
+char buffer[BUFSIZE]; 
+int bufferPointer = 0; 
 
-int getch(void)
+int getChar(void)
 {
-	return (bufp > 0) ? buf[--bufp] : getchar(); 
+	return (bufferPointer > 0) ? buffer[--bufferPointer] : getchar(); 
 }
 
-void ungetch(int c) 
+void ungetChar(int c) 
 {
-	if (bufp >= BUFSIZE)
+	if (bufferPointer >= BUFSIZE)
 		printf("error: too many character in buffer");
 	else 
-		buf[bufp++] = c;
+		buffer[bufferPointer++] = c;
 }
