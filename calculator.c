@@ -2,7 +2,7 @@
  *
  * The calculator reads arithmetic operations in postfix order and outputs the 
  * result. The calculator handles operations inlcuding: addition, subtraction,
- * multiplication, division, and modulus 
+ * multiplication, division, modulus, sine, cosine, and power
  * 
  * Examples 
  * ========
@@ -13,9 +13,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #define MAXOP 100  
 #define NUMBER '0'
+#define MATHOP '1'
 
 int getop(char[]); 
 void push(double);
@@ -35,6 +37,19 @@ int main()
         switch (type) {
         case NUMBER: 
             push(atof(input)); 
+            break;
+
+        case MATHOP: 
+            if (!strcmp(input, "sin"))
+                push(sin(pop()));
+            else if (!strcmp(input, "cos")) 
+                push(cos(pop()));
+            else if (!strcmp(input, "pow")) {
+                op2 = pop(); 
+                push(pow(pop(), op2));
+            } else {
+                printf("error: unknown operation %s\n", input);
+            }
             break;
 
         case '+': 
@@ -81,7 +96,7 @@ int main()
 #define MAXDEPTH 100 
 
 int stackPointer = 0;        
-double stack[100];   
+double stack[MAXDEPTH];   
 
 void push(double oprand) 
 {
@@ -139,11 +154,19 @@ int getop(char input[])
 
     while ((input[0] = current = getChar()) == ' ' || current == '\t');  
     input[1] = '\0'; 
+	index = 0; 
+
+    if (isalpha(current)) {
+        while (isalpha(input[++index] = current = getChar())); 
+        input[index] = '\0'; 
+        if (current != EOF) ungetChar(current);
+        return MATHOP; 
+    }
 
     if (!isdigit(current) && current != '.' && current != '-') 
         return current;	   
 
-	index = 0; 
+
 	if (current == '-') {
 		int next;
 		if (!isdigit(next = getChar())) {
