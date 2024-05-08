@@ -3,8 +3,8 @@
 
 #define MAXDEPTH 100 
 
-int stackPointer = 0;        
-double stack[MAXDEPTH];   
+static int stackPointer = 0;        
+static double stack[MAXDEPTH];   
 
 void push(double oprand) 
 {

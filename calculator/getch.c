@@ -2,8 +2,8 @@
 
 #define BUFSIZE 100 
 
-char buffer[BUFSIZE]; 
-int bufferPointer = 0; 
+static char buffer[BUFSIZE]; 
+static int bufferPointer = 0; 
 
 int getChar(void)
 {
