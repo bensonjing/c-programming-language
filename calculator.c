@@ -1,7 +1,8 @@
 /* Reverse Polish calculator 
  *
- * The calculator reads arithmetic operations in postfix order and outputs the result. 
- * The calculator handles operations inlcuding: addition, subtraction, multiplication, division, and modulus 
+ * The calculator reads arithmetic operations in postfix order and outputs the 
+ * result. The calculator handles operations inlcuding: addition, subtraction,
+ * multiplication, division, and modulus 
  * 
  * Examples 
  * ========
@@ -19,6 +20,10 @@
 int getop(char[]); 
 void push(double);
 double pop(void);
+void printTop(void); 
+void duplicate(void);
+void swap(void); 
+void clear(void);
 
 int main() 
 {
@@ -93,6 +98,34 @@ double pop(void)
     else 
         printf("error: stack empty\n"); 
         return 0.0;
+}
+
+void printTop(void) 
+{
+    if (stackPointer > 0)
+        printf("top stack element: %g\n", stack[stackPointer-1]);
+    else 
+        printf("error: stack empty\n");
+}
+
+void duplicate(void)
+{
+    double top = pop(); 
+    push(top); 
+    push(top);
+}
+
+void swap(void)
+{
+    double top1 = pop(); 
+    double top2 = pop(); 
+    push(top1); 
+    push(top2);
+}
+
+void clear(void) 
+{
+    stackPointer = 0;
 }
 
 #include <ctype.h> 
