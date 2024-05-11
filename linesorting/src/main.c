@@ -19,9 +19,6 @@ int readline(char input[], int maxlen);
 
 int main()
 {
-	printf("linsorting\n");
-	printf("%p\n", alloc(4));
-
 	return 0;
 }
 
