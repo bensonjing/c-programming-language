@@ -8,7 +8,8 @@ CC = gcc
 CFLAGS = -Wall -Wextra -pedantic
 LDFLAGS = -lm
 
-OBJS := $(patsubst %.c, %.o, $(wildcard $(SRC_DIR)/*.c)) 
+OBJS := $(patsubst %.c, %.o, $(wildcard $(SRC_DIR)/*.c))
+TEST_SRC_FILE := $(filter-out $(SRC_DIR)/main.c, $(wildcard $(SRC_DIR)/*.c))
 
 $(NAME): dir ${OBJS} 
 	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(BIN_DIR)/$@ $(patsubst %, build/%, $(OBJS)) 
@@ -19,7 +20,7 @@ $(OBJS): dir
 	@$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ -c $*.c
 
 test: dir $(OBJS)
-	@$(CC) $(CFLAGS) -o $(BIN_DIR)/$(NAME)_test $(TEST_DIR)/*.c
+	@$(CC) $(CFLAGS) -o $(BIN_DIR)/$(NAME)_test $(TEST_DIR)/*.c $(TEST_SRC_FILE)
 	@$(BIN_DIR)/$(NAME)_test
 
 dir: 
