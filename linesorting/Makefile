@@ -1,0 +1,31 @@
+NAME := linsorting
+SRC_DIR := src
+BUILD_DIR := build
+TEST_DIR := test
+BIN_DIR := bin
+
+CC = gcc
+CFLAGS = -Wall -Wextra -pedantic
+LDFLAGS = -lm
+
+OBJS := $(patsubst %.c, %.o, $(wildcard $(SRC_DIR)/*.c)) 
+
+$(NAME): dir ${OBJS} 
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(BIN_DIR)/$@ $(patsubst %, build/%, $(OBJS)) 
+	@$(BIN_DIR)/$(NAME)
+
+$(OBJS): dir 
+	@mkdir -p $(BUILD_DIR)/$(@D)
+	@$(CC) $(CFLAGS) -o $(BUILD_DIR)/$@ -c $*.c
+
+test: dir $(OBJS)
+	@$(CC) $(CFLAGS) -o $(BIN_DIR)/$(NAME)_test $(TEST_DIR)/*.c
+	@$(BIN_DIR)/$(NAME)_test
+
+dir: 
+	@mkdir -p $(BUILD_DIR) $(BIN_DIR) 
+
+clean: 
+	@rm -rf $(BUILD_DIR) $(BIN_DIR) 
+
+.PHONY: dir clean

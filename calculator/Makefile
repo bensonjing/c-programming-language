@@ -1,4 +1,4 @@
-objects = main.o stack.o getop.o getch.o 
+objects = main.o stack.o getop.o getch.o
 
 output : $(objects)
 	cc -o output $(objects) -lm
