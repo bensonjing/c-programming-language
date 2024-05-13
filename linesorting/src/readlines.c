@@ -26,7 +26,7 @@ int readlines(char *input[], int maxlines)
 		if (index >= maxlines || !(line = alloc(len))) 
 			return -1; 
 		else {
-			strcpy(current, line); 
+			strcpy(line, current); 
 			input[index++] = line; 	
 		}
 	}

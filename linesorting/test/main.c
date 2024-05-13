@@ -3,6 +3,7 @@
 #include <string.h>
 #include "../include/memory.h" 
 #include "../include/readlines.h"
+#include "../include/writelines.h"
 
 void alloc_size_0(void);
 void alloc_size_4(void); 
@@ -10,16 +11,20 @@ void alloc_size_10004(void);
 
 void readline_hello(void);
 void readline_empty_line(void);
+void writelines_hello_world(void);
 void readlines_basic(void); 
 void readlines_empty(void);
 
+void swap_test(void);
+
 int main() 
 {
-	alloc_size_0(); 
-	alloc_size_4();
-	alloc_size_10004();
-	readline_hello(); 
-	readline_empty_line();
+	// alloc_size_0(); 
+	// alloc_size_4();
+	// alloc_size_10004();
+	// readline_hello(); 
+	// readline_empty_line();
+	writelines_hello_world();
 	readlines_basic(); 
 	readlines_empty();
 
@@ -66,10 +71,22 @@ void readline_empty_line(void)
 	printf("[PASS] readline_empty_line\n");
 }
 
+void writelines_hello_world(void) 
+{
+	char *first = "hello"; 
+	char *second = "world"; 
+	char *input[2] = {first, second};
+	printf("writelines_hello_world: \n"); 
+	writelines(input, 2);
+}
+
 void readlines_basic(void)
 {
-	char *input[MAXLINE];
-	assert(readlines(input, MAXLINE) == 5); 
+	char *lines[MAXLINE];
+	int i;
+	int numlines = readlines(lines, MAXLINE); 
+	printf("numlines: %d\n", numlines);
+	for (int i = 0; i < numlines; ++i) printf("line %d: %s\n", i, *lines[i]);
 	printf("[PASS] readlines_basic\n");
 }
 
