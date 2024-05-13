@@ -43,9 +43,17 @@ int partition(char *array[], int left, int right)
 {
 	int pivot = (left + right) / 2; 
 	swap(array, right, pivot);
+	pivot = right; 
+	right--;
 
 	while (left <= right) {
+		if (strcompare(array[left], array[pivot]) <= 0) left++; 
+		else if (strcompare(array[right], array[pivot]) > 0) right--; 
+		else swap(array, left++, right--); 
 	}
+
+	swap(array, left, pivot); 
+	return left;
 }
 
 void swap(char *array[], int source, int destination)
