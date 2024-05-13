@@ -1,5 +1,5 @@
 debug ?= 1
-NAME := linsorting
+NAME := linesort
 SRC_DIR := src
 BUILD_DIR := build
 TEST_DIR := test
