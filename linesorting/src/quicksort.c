@@ -20,7 +20,7 @@ static int partition(char *array[], int left, int right);
 
 /* swap: swap the position of source and destination in the array
  * */
-void swap(char *array[], int source, int destination);
+static void swap(char *array[], int source, int destination);
 
 void quicksort(char *array[], int left, int right) 
 {

@@ -13,4 +13,3 @@
  * right: the position of the last element
  * */
 void quicksort(char *array[], int left, int right);
-void swap(char *array[], int source, int destination);
