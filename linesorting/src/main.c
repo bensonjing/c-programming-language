@@ -9,5 +9,7 @@ int main(void)
 	int numlines = readlines(input, MAXLINE); 
 	writelines(input, numlines);
 
+	printf("compare 0, 1 %d", strcompare(input[0], input[1]));
+
 	return 0;
 }

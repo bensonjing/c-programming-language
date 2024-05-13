@@ -4,7 +4,7 @@
 
 /* stringcopy: copy the string from source to destination
  * */ 
-static void stringcopy(char *destination, char *source); 
+static void strcopy(char *destination, char *source); 
 
 /* readline: read a line from input into input[] and return its length 
  *
@@ -41,7 +41,7 @@ int readlines(char *input[], int maxlines)
 			return -1; 
 		else {
 			current[len-1] = '\0';
-			stringcopy(line, current);
+			strcopy(line, current);
 			input[index++] = line; 	
 		}
 	}
@@ -49,7 +49,7 @@ int readlines(char *input[], int maxlines)
 	return index;
 }
 
-void stringcopy(char *destination, char *source)
+void strcopy(char *destination, char *source)
 {
 	while ((*destination++ = *source++)); 
 }

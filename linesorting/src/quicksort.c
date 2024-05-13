@@ -22,6 +22,14 @@ static int partition(char *array[], int left, int right);
  * */
 static void swap(char *array[], int source, int destination);
 
+/* strcompare: compare the length of two string 
+ *
+ * return: -1 if first < second 
+ *          0 if first = second 
+ *          1 if first > second
+ * */
+static int strcompare(char *first, char *second);
+
 void quicksort(char *array[], int left, int right) 
 {
 	if (left < right) {
@@ -36,7 +44,8 @@ int partition(char *array[], int left, int right)
 	int pivot = (left + right) / 2; 
 	swap(array, right, pivot);
 
-	while (left < right);
+	while (left <= right) {
+	}
 }
 
 void swap(char *array[], int source, int destination)
@@ -46,4 +55,15 @@ void swap(char *array[], int source, int destination)
 	temp = array[source]; 
 	array[source] = array[destination]; 
 	array[destination] = temp;
+}
+
+int strcompare(char *first, char *second)
+{
+	while (*first && *second) {
+		first++; 
+		second++;
+	}
+	if (*first == '\0' && *second != '\0') return -1; 
+	else if (*second == '\0' && *first != '\0') return 1; 
+	return 0;
 }
