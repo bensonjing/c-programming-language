@@ -1,3 +1,4 @@
+debug ?= 1
 NAME := linsorting
 SRC_DIR := src
 BUILD_DIR := build
@@ -7,6 +8,12 @@ BIN_DIR := bin
 CC = gcc
 CFLAGS = -Wall -Wextra -pedantic
 LDFLAGS = -lm
+
+ifeq ($(debug), 1) 
+	CFLAGS := $(CFLAGS) -g -O0 
+else 
+	CFLAGS := $(CFLAGS) -g -Oz 
+endif
 
 OBJS := $(patsubst %.c, %.o, $(wildcard $(SRC_DIR)/*.c))
 TEST_SRC_FILE := $(filter-out $(SRC_DIR)/main.c, $(wildcard $(SRC_DIR)/*.c))

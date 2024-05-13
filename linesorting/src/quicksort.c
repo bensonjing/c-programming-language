@@ -35,7 +35,7 @@ void quicksort(char *array[], int left, int right)
 	if (left < right) {
 		int pivot = partition(array, left, right); 
 		quicksort(array, left, pivot-1); 
-		quicksort(array, left, pivot-1); 
+		quicksort(array, pivot+1, right); 
 	}
 }
 
